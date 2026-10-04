@@ -66,7 +66,7 @@ To maximize fan lifespan and keep the unit silent in quiet hotel environments, t
 1. Connect a high-capacity external USB drive to the remaining blue USB 3.0 port.
 2. Install Samba via the terminal:
    ```bash
-   sudo apt-get install samba samba-common-bin -y
+   sudo apt-get update && sudo apt-get install samba samba-common -y
    ```
 3. Configure an encrypted network share to let connected travel devices wirelessly back up photos and videos locally over the private Wi-Fi network.
 
