@@ -1,83 +1,72 @@
 # TravelGateway-Pi4 ✈️🛡️
 
-A hardened, ad-blocking travel router and secure network gateway built on a **Raspberry Pi 4 (2GB RAM)**. This project establishes an encrypted **WireGuard VPN tunnel** back to a primary **Home WireGuard Server**, sanitizes traffic using a network-wide **Pi-hole ad blocker**, and provides local wireless data storage via a **Samba Photo Vault**.
+A portable, ad-blocking travel router and secure network gateway built on a **Raspberry Pi 4 (2GB RAM)**. This project establishes an encrypted **WireGuard VPN tunnel** back to a home gateway server, blocks ads and trackers network-wide using **Pi-hole**, and hosts a local **Samba file share** for wireless photo backups.
 
 ---
 
-## 🛠️ Hardware Stack & Inventory
-
-### Core Components
-*   **Single Board Computer:** Raspberry Pi 4 Model B (2GB RAM Variant)
-*   **System Storage:** SanDisk Ultra 32GB MicroSD Card
-*   **Power Supply:** Anker PowerPort C 2 Block (Dual USB-C Interface)
-*   **Power Conduit:** Pure USB-C to USB-C Cable (Rated 5V/3A 15W Minimum)
-*   **Primary Uplink:** Standard RJ45 Cat6 Ethernet Cable
-
-### Deployment Upgrades
-*   **Flashing Interface:** USB 3.0 MicroSD Card Reader (5Gbps Adapter)
-*   **External Network Array:** Linux Wi-Fi 6 Adapter (6dBi High-Gain Antenna / MediaTek MT7921AU Chipset)
-*   **Thermal Management:** 30mm DC 5V Brushless Fan + Aluminum Heatsinks
+## 🛠️ Hardware Stack
+* **SBC:** Raspberry Pi 4 Model B (2GB RAM)
+* **OS Storage:** SanDisk Ultra 32GB MicroSD Card
+* **Power:** Anker PowerPort C 2 Block + USB-C to USB-C cable (5V/3A 15W min)
+* **Uplink:** RJ45 Cat6 Ethernet Cable
+* **USB Reader:** USB 3.0 MicroSD Card Reader (For flashing)
+* **Wireless Antenna:** BrosTrend AX900 Wi-Fi 6 Adapter (MediaTek MT7921AU Chipset)
+* **Cooling:** Easycargo 30mm DC 5V Brushless Fan + Aluminum Heatsinks
 
 ---
 
-## 🔌 Hardware Architecture & Thermal Layout
+## 🔌 Hardware Setup & Cooling (Silent 3.3V Profile)
+To maximize fan lifespan and keep the unit silent in quiet hotel environments, the cooling fan is under-volted to the **3.3V GPIO pins** rather than the full 5V rail.
 
-### Fan Configuration (Silent 3.3V Profile)
-To maximize fan lifespan and eliminate high-pitched acoustics in quiet hotel environments, the cooling fan is wired to the **3.3V rails** rather than full 5V power.
+* 🔴 **Red Wire (Power):** Connected to **Pin 1** (3.3V Power)
+* ⚫ **Black Wire (Ground):** Connected to **Pin 6** (Ground)
 
-*   🔴 **Red Wire (Power):** Connected to **Pin 1** (3.3V Power - Inside Row Corner)
-*   ⚫ **Black Wire (Ground):** Connected to **Pin 6** (Ground - Outside Row, Third Pin Down)
-
-### Structural Assembly Notes
-*   **Heatsinks:** Chemically bonded via thermal adhesive pads to the CPU (Silver SoC), RAM chip, and USB controller chip.
-*   **Chassis Integration:** The 30mm fan is mounted via machine screws to the interior ceiling of the custom 3D-printed enclosure, configured to exhaust/intake air downward over the top heatsinks. The chassis lid is permanently chemically welded (glued) shut following initial hardware validation.
+### Enclosure Notes
+* Aluminum heatsinks are applied directly to the CPU, RAM, and USB controller chips.
+* The 30mm fan is mounted to the inside ceiling of the custom 3D-printed case, configured to blow cool outside air downward onto the heatsinks. 
+* The case lid is permanently glued shut following hardware verification.
 
 ---
 
-## 🚀 Execution & Configuration Roadmap
+## 🚀 Deployment Guide
 
-### Phase 1: Operating System Initialization
-1.  Isolate the **32GB MicroSD card** and mount it inside the **USB Card Reader**.
-2.  Launch the **Raspberry Pi Imager** tool on the host computer.
-3.  Target the underlying device profile as **Raspberry Pi 4**.
-4.  Select the **Raspberry Pi OS Lite (64-bit)** operating system image.
-5.  Open Advanced Customization Settings (Gear Icon) to explicitly enforce:
-    *   Target SSH Server Initialization (`Enabled`)
-    *   System Administrative Credentials (`Username` & `Password`)
-    *   Local Time Zone Mapping
-6.  Execute the formatting and image deployment pipeline (`Write`).
+### Phase 1: OS Installation
+1. Insert the 32GB MicroSD card into the USB card reader and plug it into your computer.
+2. Open **Raspberry Pi Imager**, select **Raspberry Pi 4**, and choose **Raspberry Pi OS Lite (64-bit)**.
+3. Open the Advanced Settings (Gear Icon) and configure:
+   * Enable SSH
+   * Set secure username and password
+   * Set local time zone
+4. Flash the image to the card.
 
-### Phase 2: Core Routing Deployment (RaspAP)
-1.  Slide the flashed MicroSD card into the Pi 4 slot. Connect the **Wi-Fi 6 Antenna** to a blue USB 3.0 port. 
-2.  Attach the **Ethernet cable** directly between the Pi and your upstream home router. Boot the machine.
-3.  Because the wireless adapter relies on a native MediaTek MT7921AU chipset, the core Linux kernel will automatically recognize and activate the adapter without requiring manual driver installations.
-4.  Establish an active SSH terminal connection into the Pi over the local area network.
-5.  Execute the automated deployment script for the routing dashboard:
-    ```bash
-    curl -sL https://install.raspap.com | bash
-    ```
-6.  Reboot the system and verify local access to the RaspAP web control portal. Configure the **External USB Interface (wlan1)** as the primary WAN client (pulling public internet) and the **Internal Wi-Fi chip (wlan0)** as the private LAN hotspot manager (*"MyTravelWiFi"*).
+### Phase 2: Travel Router Setup (RaspAP)
+1. Insert the card into the Pi 4, connect the BrosTrend AX900 antenna to a blue USB 3.0 port, plug in the Ethernet cable to your home router, and power it up.
+2. SSH into the Pi over your local network. (The MediaTek MT7921AU chipset is natively supported by the Linux kernel; no driver installation required).
+3. Run the automated RaspAP installer:
+   ```bash
+   curl -sL https://raspap.com | bash
+   ```
+4. Reboot the Pi and access the web dashboard. Configure the external USB antenna (`wlan1`) as your WAN interface to pull in public Wi-Fi, and the internal Wi-Fi chip (`wlan0`) to broadcast your private hotspot.
 
-### Phase 3: Traffic Sanitation Deployment (Pi-hole)
-1.  Execute the automated network-wide ad-blocking deployment command inside the terminal:
-    ```bash
-    curl -sSL https://install.pi-hole.net | bash
-    ```
-2.  Configure the static network profile to bind safely alongside the active RaspAP interface.
-3.  Map RaspAP’s localized DHCP server pool settings to enforce the Pi-hole local loopback IP address (`127.0.0.1`) as the primary upstream DNS server for all connected client devices.
+### Phase 3: Ad-Blocking Integration (Pi-hole)
+1. Install Pi-hole alongside RaspAP by running:
+   ```bash
+   curl -sSL https://pi-hole.net | bash
+   ```
+2. Bind the static network profile to your active RaspAP interface.
+3. Configure RaspAP's DHCP server settings to force all connected client devices to use the local loopback address (`127.0.0.1`) as their primary upstream DNS server.
 
-### Phase 4: Encrypted Tunnel Integration (Home VPN Gateway)
-1.  Authenticate into the administrative control interface of your **Home WireGuard VPN Server**.
-2.  Access your VPN host panel workspace and trigger activation.
-3.  Generate an independent, isolated client node profile labeled **`TravelPi`**.
-4.  Export the resulting cryptographic configuration layout as a plain-text `.conf` file structure.
-5.  Return to the **RaspAP Web Portal** on the travel device, navigate to the **VPN Client Profile** module, select the **WireGuard** protocol engine, and upload the configuration profile.
-6.  Enable automatic connectivity tracking blocks to ensure the encrypted tunnel re-initializes natively on device startup.
+### Phase 4: WireGuard VPN Tunnel
+1. Access your home network's WireGuard VPN server and generate a new client peer configuration profile.
+2. Export the configuration file data as a plain-text `.conf` profile.
+3. Navigate to the VPN Client module in the RaspAP dashboard, select the WireGuard protocol engine, and paste the config file data.
+4. Enable the connection on startup to ensure all travel traffic tunnels securely through your home network.
 
-### Phase 5: Storage Vault Extension (Samba Photo Share)
-1.  Connect an auxiliary high-capacity external storage drive to the remaining blue USB 3.0 hardware interface.
-2.  Initialize and configure the **Samba (SMB) protocol engine** via the terminal line:
-    ```bash
-    sudo apt-get install samba samba-common-bin -y
-    ```
-3.  Expose a secure system directory structure allowing travel devices to safely offload photographic assets and media volumes locally to the drive over the private encrypted Wi-Fi link.
+### Phase 5: Local Samba Photo Share
+1. Connect a high-capacity external USB drive to the remaining blue USB 3.0 port.
+2. Install Samba via the terminal:
+   ```bash
+   sudo apt-get install samba samba-common-bin -y
+   ```
+3. Configure an encrypted network share to let connected travel devices wirelessly back up photos and videos locally over the private Wi-Fi network.
+
