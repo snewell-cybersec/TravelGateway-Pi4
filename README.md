@@ -51,7 +51,7 @@ To maximize fan lifespan and keep the unit silent in quiet hotel environments, t
 ### Phase 3: Ad-Blocking Integration (Pi-hole)
 1. Install Pi-hole alongside RaspAP by running:
    ```bash
-   curl -sSL https://pi-hole.net | bash
+   curl -sSL https://install.pi-hole.net | bash
    ```
 2. Bind the static network profile to your active RaspAP interface.
 3. Configure RaspAP's DHCP server settings to force all connected client devices to use the local loopback address (`127.0.0.1`) as their primary upstream DNS server.
