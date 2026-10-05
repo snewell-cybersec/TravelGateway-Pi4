@@ -54,7 +54,7 @@ sh -c 'wget linux.brostrend.com/install -O /tmp/install && sh /tmp/install'
 ### Phase 3: Ad-Blocking Integration (Pi-hole)
 1. Install the Docker engine runtime components:
 ```bash
-curl -fsSL https://docker.com -o get-docker.sh
+curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 ```
 
