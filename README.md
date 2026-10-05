@@ -104,12 +104,3 @@ sudo docker compose up -d
 2. Export the configuration file data as a plain-text `.conf` profile.
 3. Navigate to the VPN Client module in the RaspAP dashboard, select the WireGuard protocol engine, and paste the config file data.
 4. Enable the connection on startup to ensure all travel traffic tunnels securely through your home network.
-
-### Phase 5: Local Samba Photo Share
-1. Connect a high-capacity external USB drive to the remaining blue USB 3.0 port.
-2. Install Samba via the terminal:
-   ```bash
-   sudo apt-get update && sudo apt-get install samba samba-common -y
-   ```
-3. Configure an encrypted network share to let connected travel devices wirelessly back up photos and videos locally over the private Wi-Fi network.
-
