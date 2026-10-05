@@ -41,13 +41,14 @@ To maximize fan lifespan and keep the unit silent in quiet hotel environments, t
 
 ### Phase 2: Travel Router Setup (RaspAP)
 1. Insert the card into the Pi 4, connect the BrosTrend AX900 antenna to a blue USB 3.0 port, plug in the Ethernet cable to your home router, and power it up.
-2. SSH into the Pi over your local network. Requires initializing the external driver using the manufacturer installer script: sh -c 'wget linux.brostrend.com/install -O /tmp/install && sh /tmp/install'
+2. SSH into the Pi over your local network. Requires initializing the external driver using the manufacturer installer script:
+sh -c 'wget linux.brostrend.com/install -O /tmp/install && sh /tmp/install'
 
-3. Run the automated RaspAP installer:
+4. Run the automated RaspAP installer:
    ```bash
    curl -sL https://install.raspap.com | bash
    ```
-4. Reboot the Pi and access the web dashboard. Configure the external USB antenna (`wlan1`) as your WAN interface to pull in public Wi-Fi, and the internal Wi-Fi chip (`wlan0`) to broadcast your private hotspot.
+5. Reboot the Pi and access the web dashboard. Configure the external USB antenna (`wlan1`) as your WAN interface to pull in public Wi-Fi, and the internal Wi-Fi chip (`wlan0`) to broadcast your private hotspot.
 
 ### Phase 3: Ad-Blocking Integration (Pi-hole)
 1. Install Pi-hole alongside RaspAP by running:
