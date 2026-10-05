@@ -44,7 +44,7 @@ To maximize fan lifespan and keep the unit silent in quiet hotel environments, t
 2. SSH into the Pi over your local network. (The MediaTek MT7921AU chipset is natively supported by the Linux kernel; no driver installation required).
 3. Run the automated RaspAP installer:
    ```bash
-   curl -sL https://raspap.com | bash
+   curl -sL https://install.raspap.com | bash
    ```
 4. Reboot the Pi and access the web dashboard. Configure the external USB antenna (`wlan1`) as your WAN interface to pull in public Wi-Fi, and the internal Wi-Fi chip (`wlan0`) to broadcast your private hotspot.
 
