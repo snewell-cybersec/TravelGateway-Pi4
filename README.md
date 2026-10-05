@@ -52,12 +52,52 @@ sh -c 'wget linux.brostrend.com/install -O /tmp/install && sh /tmp/install'
 5. Reboot the Pi and access the web dashboard. Configure the external USB antenna (`wlan1`) as your WAN interface to pull in public Wi-Fi, and the internal Wi-Fi chip (`wlan0`) to broadcast your private hotspot.
 
 ### Phase 3: Ad-Blocking Integration (Pi-hole)
-1. Install Pi-hole alongside RaspAP by running:
-   ```bash
-   curl -sSL https://install.pi-hole.net | bash
-   ```
-2. Bind the static network profile to your active RaspAP interface.
-3. Configure RaspAP's DHCP server settings to force all connected client devices to use the local loopback address (`127.0.0.1`) as their primary upstream DNS server.
+1. Install the Docker engine runtime components:
+```bash
+curl -fsSL https://docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+
+2. Create a dedicated environment directory for persistent configuration data:
+```bash
+mkdir ~/pihole && cd ~/pihole
+```
+
+3. Create a service layout profile:
+```bash
+nano docker-compose.yml
+```
+
+4. Paste the following composition parameters (this maps DNS natively but routes the web dashboard to port `8080`):
+```yaml
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8080:80/tcp"
+    environment:
+      TZ: 'America/Chicago'
+      WEBPASSWORD: 'ChooseSecurePasswordHere'
+    volumes:
+      - './etc-pihole:/etc/pihole'
+      - './etc-dnsmasq.d:/etc/dnsmasq.d'
+    restart: unless-stopped
+```
+
+5. Launch the isolated container in detached background execution mode:
+```bash
+sudo docker compose up -d
+```
+
+6. Link RaspAP to the new ad-shield:
+   * Access the RaspAP admin dashboard (`http://10.3.141.1`).
+   * Navigate to **DHCP Server** settings.
+   * Change the primary upstream DNS server pushed to travel clients to the loopback address (`127.0.0.1`).
+   * Open the standalone Pi-hole control dashboard interface at `http://10.3.141` using your configured environment password.
+
 
 ### Phase 4: WireGuard VPN Tunnel
 1. Access your home network's WireGuard VPN server and generate a new client peer configuration profile.
