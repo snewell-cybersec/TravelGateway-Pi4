@@ -93,10 +93,10 @@ sudo docker compose up -d
 ```
 
 6. Link RaspAP to the new ad-shield:
-   * Access the RaspAP admin dashboard (`http://10.3.141.1`).
+   * Access the RaspAP admin dashboard (`http://10.3.141.1.1:8080/admin`).
    * Navigate to **DHCP Server** settings.
    * Change the primary upstream DNS server pushed to travel clients to the loopback address (`127.0.0.1`).
-   * Open the standalone Pi-hole control dashboard interface at `http://10.3.141` using your configured environment password.
+   * Open the standalone Pi-hole control dashboard interface at `http://10.3.141.1:8080/admin` using your configured environment password.
 
 
 ### Phase 4: WireGuard VPN Tunnel
