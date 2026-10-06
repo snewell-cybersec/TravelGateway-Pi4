@@ -51,53 +51,29 @@ sh -c 'wget linux.brostrend.com/install -O /tmp/install && sh /tmp/install'
    ```
 5. Reboot the Pi and access the web dashboard. Configure the external USB antenna (`wlan1`) as your WAN interface to pull in public Wi-Fi, and the internal Wi-Fi chip (`wlan0`) to broadcast your private hotspot.
 
-### Phase 3: Ad-Blocking Integration (Pi-hole)
-1. Install the Docker engine runtime components:
-```bash
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-```
+### Phase 3: Native Ad-Blocking Integration (Pi-hole v6.0+)
+Because RaspAP's administration interface claims port 80 by default, we deploy Pi-hole natively and shift its new embedded FTL web server engine to port 8080 to prevent system service conflicts.
 
-2. Create a dedicated environment directory for persistent configuration data:
-```bash
-mkdir ~/pihole && cd ~/pihole
-```
-
-3. Create a service layout profile:
-```bash
-nano docker-compose.yml
-```
-
-4. Paste the following composition parameters (this maps DNS natively but routes the web dashboard to port `8080`):
-```yaml
-services:
-  pihole:
-    container_name: pihole
-    image: pihole/pihole:latest
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "8080:80/tcp"
-    environment:
-      TZ: 'America/Chicago'
-      WEBPASSWORD: 'ChooseSecurePasswordHere'
-    volumes:
-      - './etc-pihole:/etc/pihole'
-      - './etc-dnsmasq.d:/etc/dnsmasq.d'
-    restart: unless-stopped
-```
-
-5. Launch the isolated container in detached background execution mode:
-```bash
-sudo docker compose up -d
-```
-
-6. Link RaspAP to the new ad-shield:
-   * Access the RaspAP admin dashboard (`http://10.3.141.1.1:8080/admin`).
-   * Navigate to **DHCP Server** settings.
-   * Change the primary upstream DNS server pushed to travel clients to the loopback address (`127.0.0.1`).
-   * Open the standalone Pi-hole control dashboard interface at `http://10.3.141.1:8080/admin` using your configured environment password.
-
+1. Run the official Pi-hole core network installer script:
+   ```bash
+   curl -sSL https://install.pi-hole.net | bash
+   ```
+2. Step through the interactive setup menus. When prompted for the network interface, choose `wlan0` (your local hotspot interface) so it can capture incoming client traffic. Select your preferred upstream DNS providers, and note down the administrator dashboard password displayed on the final completion window.
+3. Once the installer finishes execution, open the primary configuration file for Pi-hole v6's internal server engine:
+   ```bash
+   sudo nano /etc/pihole/pihole.toml
+   ```
+4. Look for the `[webserver]` block, locate the port parameter assignment, and change it to match the configuration below (if the parameter is missing, append it under the webserver heading):
+   ```toml
+   [webserver]
+   port = "8080"
+   ```
+5. Save and close the file (`Ctrl+O`, `Enter`, `Ctrl+X`), then restart the FTL subsystem engine to release port 80 and apply your changes:
+   ```bash
+   sudo systemctl restart pihole-FTL
+   ```
+6. **Link RaspAP to your new ad-shield:** Access the RaspAP admin interface at `http://10.3.141.1`. Navigate to **DHCP Server settings**. Change the primary upstream DNS server pushed out to your travel clients to your hotspot gateway interface IP address: `10.3.141.1`.
+7. You can now safely manage your blocklists, view metrics, and access the standalone control interface by visiting: `http://10.3.141.1:8080/admin`.
 
 ### Phase 4: WireGuard VPN Tunnel
 1. Access your home network's WireGuard VPN server and generate a new client peer configuration profile.
