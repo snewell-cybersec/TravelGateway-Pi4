@@ -1,6 +1,6 @@
 # TravelGateway-Pi4 ✈️🛡️
 
-A portable, ad-blocking travel router and secure network gateway built on a **Raspberry Pi 4 (2GB RAM)**. This project establishes an encrypted **WireGuard VPN tunnel** back to a home gateway server, blocks ads and trackers network-wide using **Pi-hole**, and hosts a local **Samba file share** for wireless photo backups.
+A portable, ad-blocking travel router and secure network gateway built on a **Raspberry Pi 4 (2GB RAM)**. This project establishes an encrypted **WireGuard VPN tunnel** back to a home gateway server.
 
 ---
 
