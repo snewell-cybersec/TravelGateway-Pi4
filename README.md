@@ -43,11 +43,11 @@ To maximize fan lifespan and keep the unit silent in quiet hotel environments, t
 ```bash
 sh -c 'wget linux.brostrend.com/install -O /tmp/install && sh /tmp/install'
 ```
-4. Run the automated RaspAP installer:
+3. Run the automated RaspAP installer:
    ```bash
    curl -sL https://install.raspap.com | bash
    ```
-5. Reboot the Pi and access the web dashboard. Configure the external USB antenna (`wlan1`) as your WAN interface to pull in public Wi-Fi, and the internal Wi-Fi chip (`wlan0`) to broadcast your private hotspot.
+4. Reboot the Pi and access the web dashboard. Configure the external USB antenna (`wlan1`) as your WAN interface to pull in public Wi-Fi, and the internal Wi-Fi chip (`wlan0`) to broadcast your private hotspot.
 
 ### Phase 3: Native Ad-Blocking Integration (Pi-hole v6.0+)
 Because RaspAP's administration interface claims port 80 by default, we deploy Pi-hole natively and shift its new embedded FTL web server engine to port 8080 to prevent system service conflicts.
