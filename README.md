@@ -11,8 +11,7 @@ A portable, ad-blocking travel router and secure network gateway built on a **Ra
 * **Uplink:** RJ45 Cat6 Ethernet Cable
 * **USB Reader:** USB 3.0 MicroSD Card Reader (For flashing)
 * **Wireless Antenna:** BrosTrend AX900 Wi-Fi 6 Adapter (MediaTek MT7921AU Chipset)
-* **Cooling:** 40mm DC 5V Brushless Fan + Aluminum Heatsinks
-
+* **Cooling:** 40mm DC 5V Brushless Fan
 ---
 
 ## 🔌 Hardware Setup & Cooling (Silent 3.3V Profile)
@@ -22,7 +21,6 @@ To maximize fan lifespan and keep the unit silent in quiet hotel environments, t
 * ⚫ **Black Wire (Ground):** Connected to **Pin 6** (Ground)
 
 ### Enclosure Notes
-* Aluminum heatsinks are applied directly to the CPU, RAM, and USB controller chips.
 * The 40mm fan is mounted to the inside ceiling of the custom 3D-printed case, configured to blow cool outside air downward onto the heatsinks. 
 * The case lid is permanently glued shut following hardware verification.
 
