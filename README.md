@@ -87,7 +87,7 @@ Because RaspAP's administration interface claims port 80 by default, we deploy P
 ![RaspAP Active Hotspot Management Panel](Image/RaspAP%20Dashboard.png)
 
 ### Assembled Hardware Deployment Node
-![TravelGateway-Pi4 Final Hardware Build Configuration](Image/Raspberry%20Pi.png)
+![TravelGateway-Pi4 Final Hardware Build Configuration](Image/Raspberry%20Pi.jpeg)
 
 
 
