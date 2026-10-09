@@ -82,11 +82,12 @@ Because RaspAP's administration interface claims port 80 by default, we deploy P
 ## 📷 Lab Verification Screenshots
 
 ### Active Routing & Security Dashboards
-![Pi-hole v6 Ad-Blocking Metrics Dashboard](Image/pihole_dashboard.png)
+![Pi-hole v6 Ad-Blocking Metrics Dashboard](Image/PiHole%20Dashboard.png)
 
-![RaspAP Active Hotspot Management Panel](Image/raspap_dashboard.png)
+![RaspAP Active Hotspot Management Panel](Image/RaspAP%20Dashboard.png)
 
 ### Assembled Hardware Deployment Node
-![TravelGateway-Pi4 Final Hardware Build Configuration](Image/hardware_setup.png)
+![TravelGateway-Pi4 Final Hardware Build Configuration](Image/Raspberry%20Pi.png)
+
 
 
