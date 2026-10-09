@@ -78,3 +78,13 @@ Because RaspAP's administration interface claims port 80 by default, we deploy P
 2. Export the configuration file data as a plain-text `.conf` profile.
 3. Navigate to the VPN Client module in the RaspAP dashboard, select the WireGuard protocol engine, and paste the config file data.
 4. Enable the connection on startup to ensure all travel traffic tunnels securely through your home network.
+
+## 📷 Lab Verification Screenshots
+
+### Active Routing & Security Dashboards
+![Pi-hole v6 Ad-Blocking Metrics Dashboard](Images/pihole_dashboard.png)
+![RaspAP Active Hotspot Management Panel](Images/raspap_dashboard.png)
+
+### Assembled Hardware Deployment Node
+![TravelGateway-Pi4 Final Hardware Build Configuration](Images/hardware_setup.png)
+
